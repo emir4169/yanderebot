@@ -65,7 +65,7 @@ function connectToServer() {
 						break;
 					case "chat":
 						holder = "" + cmd[1] + ": " + cmd[2];
-						text = holder.replace(/(\\x[\da-f]{2}|\\u[\da-f]{4}|\\u{1[\da-f]{4}})+/g, function ass(x) {
+						text = holder.replace(/(\\x[\da-f]{2}|\\u[\da-f]{4}|\\u{1[\da-f]{4}})+/g, function qqqq(x) {
 							return eval("'" + x + "'")
 						});
 						break;
