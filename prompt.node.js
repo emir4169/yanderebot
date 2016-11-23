@@ -5,7 +5,7 @@ var input = readline.createInterface({
 });
 
 function prompt (callback, pro) {
-	input.question((typeof pro === "string" ? pro : ">"), function (str) {
+	input.question((typeof pro === "string" ? pro : ""), function (str) {
 	callback(str);
 	return prompt(callback, pro);
 	});

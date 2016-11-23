@@ -1,6 +1,3 @@
-/* Chat using echo 'message' > message while in
-   the bot's working directory */
-
 var chalk = require("chalk");
 var fs = require("fs");
 var prompt = require("../prompt.node.js");
@@ -10,10 +7,10 @@ var WebSocketClient = require("websocket").client;
 // Config
 class Config {
 	constructor() {
-		this.conxTimeout = 600; //Reconnect timeout on disconnect (ms)
+		this.conxTimeout = 600; //Reconnect timeout on disconnect (ms), keep this from being too low to reduce stress on the server
 		this.ip = "170.75.163.216:6004"; //IP of websocket (found by typing serverAddress in JavaScript console while connected to a VM)
 		this.name = "C3PO"; //Bot's join username
-		this.logFile = "log.txt"; //Path to log file
+		this.logFile = "log.txt"; //Path to log file, tail -f is useful for this
 	}
 }
 var config = new Config();
@@ -43,7 +40,10 @@ function connectToServer() {
 
 			conx.on("close", function() {
 				console.log(d.getHours() + ":" + d.getMinutes() + "." + d.getSeconds() + ": " + chalk.white.bgRed.bold("Logger Disconnected"));
-				connectToServer();
+				fs.appendFile(config.logFile, "\r\n" + "<" + getDatee() + "> " + "[Disconnected from Websocket]", function(error) {});
+				setTimeout(function() {
+					connectToServer();
+				}, config.conxTimeout);
 			});
 
 			conx.on("message", function(message) {
@@ -61,7 +61,7 @@ function connectToServer() {
 						text = null;
 						break;
 					case "rename":
-						text = "[Connection to websocket established";
+						text = "[Connection to websocket established]";
 						break;
 					case "chat":
 						holder = "" + cmd[1] + ": " + cmd[2];
@@ -76,6 +76,7 @@ function connectToServer() {
 				var time = Date.now();
 
 				if (text !== null) {
+					console.log("<" + getDatee() + "> " + text);
 					fs.appendFile(config.logFile, "\r\n" + "<" + getDatee() + "> " + text, function(error) {});
 				}
 
@@ -91,28 +92,8 @@ function connectToServer() {
 				conx.sendUTF("3.nop;");
 			}
 		}, 2500);
-
-		watch('message', function(filename) {
-			read(filename);
-		});
-
-		function read(filename) {
-			fs.readFile(filename, 'utf8',
-				function(err, data) {
-					if (err) throw err;
-					data = data.replace(/[\r\n]/g, "");
-					if (data == ".ctrl") {
-						conx.sendUTF(encodeCommand(['rename', 'Ctrl']));
-						data = "";
-					} else if (data == ".c3po") {
-						conx.sendUTF(encodeCommand(['rename', 'C3PO']));
-						data = "";
-					}
-					conx.sendUTF(encodeCommand(['chat', data]));
-				});
-		}
 		prompt(function(txt) {
-			conx.sendUTF(encodeCommand(txt.split(":")));
+			conx.sendUTF(encodeCommand(['chat', txt]));
 		});
 
 	});
