@@ -8,5 +8,5 @@ This repository contains bots written in JavaScript that connect and interact wi
 
 ###Required NPM Packages for C3PO variants (includes above)
 ======
-- node-watch
-- readline
+- readline
+
