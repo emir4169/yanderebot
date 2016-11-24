@@ -118,14 +118,16 @@ function connectToServer() {
 
 				switch(cmd) {
 					case "rename":
-						conx.sendUTF(encodeCommand(['rename', suffix])); break;
+						conx.sendUTF(encodeCommand(['rename', suffix]));
+						break;
 						
 					case "connect": 
 						console.log(chalk.red.bold("The bot has issues staying connected whenever you send the connect command."));
-						conx.sendUTF(encodeCommand(['connect', suffix])); break;
+						conx.sendUTF(encodeCommand(['connect', suffix]));
 						//isConnected = true;
+						break;
 
-					case "vote": break;
+					case "vote":
 						var t;
 						if(suffix == "yes") {
 							t = 1;
@@ -133,12 +135,26 @@ function connectToServer() {
 							t = 0;
 						}
 						conx.sendUTF(encodeCommand(['vote', t])); break;
+						break;
 
-					case "disconnect": break;
-					case "getusers": break;
-					case "turn": break;
-					case "sendkey": break;
-					case "getqueue": break;
+					case "disconnect":
+						break;
+
+					case "getusers":
+						break; //This needs work
+
+					case "turn": 
+						conx.sendUTF(encodeCommand(['turn', '1']));	
+						break;
+
+					case "sendkey": // In the future, this will not be based off key ID
+						conx.sendUTF(encodeCommand(['key', suffix, '1']));
+						conx.sendUTF(encodeCommand(['key', suffix, '0']));
+						break;
+
+					case "getqueue":
+						break; //This needs work
+
 					case "help": 
 						console.log(chalk.green("-------Supported Commands-------\n") + 
 						chalk.blue("rename:\t\t") + chalk.bold("<name>\n") + 
