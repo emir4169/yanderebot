@@ -53,7 +53,7 @@ function connectToServer() {
 				console.log(chalk.red.bold("Connection Error: " + error.toString()));
 				isConnected = false;
 				setImmediate(() => {
-					connectToServer();
+//					connectToServer();
 				});
 			});
 
@@ -83,7 +83,9 @@ function connectToServer() {
 					case "remuser":
 						if(vm) {
 							var ind = users.indexOf(cmd[2]);
-							users.slice(ind, 1);
+							console.log(ind);
+							console.log(cmd[2]);
+							users.splice(ind, 1);
 							users.sort();
 							text = "<" + cmd[2] + " has left>";
 							console.log(chalk.yellow("[" + cmd[2] + " has left]"));
@@ -116,10 +118,13 @@ function connectToServer() {
  
 					case "rename":
 						if(vm) {
-							var e = users.indexOf(cmd[2]); //Get index of old name in user array
-							users.slice(e, 1, cmd[3]); //Replace it with the new name
-							users.sort();
 							if(!(cmd[2] === "0")) {
+								var e = users.indexOf(cmd[2]); //Get index of old name in user array
+								console.log(e);
+								console.log(cmd[2]);
+								console.log(cmd[3]);
+								users.splice(e, 1, cmd[3]); //Replace it with the new name
+								users.sort();
 								console.log(chalk.yellow("[" + cmd[2] + " is now known as " + cmd[3] + "]"));
 								text = "<" + cmd[2] + " is now known as " + cmd[3] + ">";
 							}
@@ -147,10 +152,10 @@ function connectToServer() {
 						text = null;
 						break;
 					case "turn" :
-						turn = cmd[1];
+//						turn = cmd[1];
 //						console.log(turn);
-						if(vm) {
-						}
+//						if(vm) {
+//						}
 						text = null;
 //						console.log(cmd[0] + " " + cmd[1] + " " + cmd[2] + " " + cmd[3] + " " + cmd[4]);
 						break;
