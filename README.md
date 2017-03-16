@@ -10,5 +10,5 @@ C3PO acts as a chat client and chat logger.
 
 ###Required NPM Packages for C3PO (includes above)
 ======
-- readline
+- readline 
 
