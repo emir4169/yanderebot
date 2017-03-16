@@ -15,7 +15,7 @@ std::string encode(std::string *str, unsigned int len) {
 	std::string rt = "";
 	for(;i < len; i++) {
 		cur = *(str + i);
-		rt += std::to_string(cur.length()); //to string because c++ string stl can't into automatic conversion of int to string
+		rt += std::to_string(cur.length());
 		rt += ".";
 		rt += cur;
 		if(i < len - 1)
