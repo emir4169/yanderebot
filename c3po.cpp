@@ -1,68 +1,61 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <math.h>
+#include <sstream>
 
 
 /* To do:
  * Move to async websocket
  * Read from stdin on a seperate thread, then from that thread send any data to main as a string */
 //typedef std::vector<std::string> str_vec;
-
-std::string encode(std::string *str, unsigned int len) {
-	int i = 0;
-	std::string cur;
-	std::string rt = "";
-	for(;i < len; i++) {
-		cur = *(str + i);
-		rt += std::to_string(cur.length());
-		rt += ".";
-		rt += cur;
-		if(i < len - 1)
-			rt += ",";
-		else
-			rt += ";";
-	}
-	return rt;
+std::string encode(std::vector<std::string> vec) {
+    std::string fin("");
+    for(int i = 0; i < vec.size();++i) {
+        fin += std::to_string(vec[i].length());
+        fin += '.';
+        fin += vec[i];
+        if(i != vec.size() - 1)
+            fin += ',';
+    }
+    fin += ';';
+    return fin;
 }
 
-int parseint(std::string a) {
-	int i;
-	sscanf(a.c_str(), "%d", &i);
-	return i;
-}
 
-int digits(int num) {
-	return floor(log10(num) + 1);
-}
+void decode(std::string str) {
+    std::vector<std::string> decoded;
+    std::stringstream ss;
+    ss << str;
+    for(int i = 0; i < str.length();++i) {
+        char testChar;
+        ss >> testChar;
+        int ssCountOriginal = static_cast<int>(ss.tellg()) - 1, wordLength{0};
+        switch(testChar) {
+            case '0': case '1': case '2': case '3':
+            case '4': case '5': case '6': case '7':
+            case '8': case '9':
+                ss.putback(testChar);
+               
+                ss >> wordLength;
+                
+                // Skip length of number plus the period
+                i += (static_cast<int>(ss.tellg()) - ssCountOriginal) + 1;
 
-std::vector<std::string> decode(std::string a) {
-	std::vector<std::string> rt;
-	std::string temp = "";
-	std::string e;
-	int skip, pos, d, len, ind;
-	for(;;) {
-		sscanf(a.c_str(), "%d", &skip); // Get how many characters to skip
-		d = digits(skip); // Get number of digits in number
-		ind = skip + d + 1;
-		e = a[ind];
-		if(e == ";") {
-			pos = a.find(".");
-			temp = a.substr(pos + 1,skip); // Make a substring of the body of the message
-			rt.push_back(temp);
-			break;
-		} else if(e == ",") {
-			pos = a.find(".");
-			temp = a.substr(pos + 1,skip);
-			a = a.erase(0,ind + 1); //Erase including comma
-			rt.push_back(temp);
-			continue;
-		} else  {
-			std::cerr << "Error: Malformed UTF-8 string. " << std::endl;
-			break;
-		}
-	}
-	return rt;
+                // Sync buffer
+                ss >> testChar;
+                break;
+            default: throw std::runtime_error("Something happened :(");
+        }
+        std::string word("");
+        for(int k = i;k < i + wordLength;++k) word += ss.get();
+        decoded.push_back(word);
+
+        // Advance stream and i one
+        i += wordLength + 1;
+        ss >> testChar;
+    }
+    for(auto& i : decoded)  std::cout << i << ' ';
+    std::cout << std::endl;
 }
 
 int main() {
