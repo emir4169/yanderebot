@@ -22,7 +22,7 @@ std::string encode(std::vector<std::string> vec) {
 }
 
 
-void decode(std::string str) {
+std::vector<std::string> decode(std::string str) {
     std::vector<std::string> decoded;
     std::stringstream ss;
     ss << str;
@@ -54,23 +54,5 @@ void decode(std::string str) {
         i += wordLength + 1;
         ss >> testChar;
     }
-    for(auto& i : decoded)  std::cout << i << ' ';
-    std::cout << std::endl;
+    return decoded;
 }
-
-int main() {
-//	std::string test[3] = {"1+#1*1#(", "#8#8$+", "293728"};
-//	unsigned short int leng = (sizeof(test)/sizeof(*test));
-//	std::string encoded = encode(test, leng);
-//	std::cout << encoded << std::endl;
-	std::string g;
-	std::cin >> g;
-	std::vector<std::string> e = decode(g);
-	unsigned int j = e.size();
-	int i;
-	for(i = 0;i < j;i++) {
-		std::cout << e[i] << std::endl;
-	}
-	return 0;
-}
-
