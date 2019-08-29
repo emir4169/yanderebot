@@ -125,7 +125,7 @@ function connectToServer() {
 					setTimeout(function() { chat('Bot up and working!'); }, 3000);
 					break;
 					case prefix + "minecraft":
-					setTimeout(function() { chat('https://discord.gg/minecraft'; )}) // haha minecraft discord server advertisement epic
+					setTimeout(function() { chat('https://discord.gg/minecraft') }, 3000) // haha minecraft discord server advertisement epic
 					break;
 				}
 				break;
