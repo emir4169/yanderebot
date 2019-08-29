@@ -1,151 +1,146 @@
 var WebSocketClient = require('websocket').client;
 var chalk = require('chalk');
 class Config {
-	constructor() {
-		this.conxTimeout = 600;
-		this.ip = "104.219.234.138:6004";
-		this.name = 'YandereBot';
-	}
+    constructor() {
+        this.conxTimeout = 600;
+        this.ip = "104.219.234.138:6004";
+        this.name = 'YandereBot';
+    }
 }
 var config = new Config();
 
 function connectToServer() {
-	var ws = new WebSocketClient();
+    var ws = new WebSocketClient();
 
-	console.log(chalk.blue('Connecting to VM1...'));
+    console.log(chalk.blue('Connecting to VM1...'));
 
-	ws.on('connectFailed', function(error) {
-		console.log(chalk.red('Failed to connect: ' + error.toString()));
-		connectToServer();
-	});
+    ws.on('connectFailed', function(error) {
+        console.log(chalk.red('Failed to connect) { ' + error.toString()));
+        connectToServer();
+    });
 
-	ws.on('connect', function(conx) {
+    ws.on('connect', function(conx) {
+        console.log(chalk.green('Connected to VM1 as YandereBot!'));
 
-		console.log(chalk.green('Connected to VM1 as YandereBot!'));
-    
-		function voteYes() {
-			conx.sendUTF(encodeCommand(['vote', '1']));
-		}
+        function voteYes() {
+            conx.sendUTF(encodeCommand(['vote', '1']));
+        }
 
-		function voteNo() {
-			conx.sendUTF(encodeCommand(['vote', '0']));
-		}
+        function voteNo() {
+            conx.sendUTF(encodeCommand(['vote', '0']));
+        }
 
-		function chat(message) {
-			conx.sendUTF(encodeCommand(['chat', message]));
-		}
-		
-		function sendKey(keyID) {
-			conx.sendUTF(encodeCommand(['key', keyID, '1']));
-			conx.sendUTF(encodeCommand(['key', keyID, '0']));
-		}
+        function chat(message) {
+            conx.sendUTF(encodeCommand(['chat', message]));
+        }
 
-		function mouse(px, pxx, position) {
-			conx.sendUTF(encodeCommand(['mouse', px, pxx, position]));
-		}
+        function sendKey(keyID) {
+            conx.sendUTF(encodeCommand(['key', keyID, '1']));
+            conx.sendUTF(encodeCommand(['key', keyID, '0']));
+        }
 
-		function getTurn() {
-			conx.sendUTF(encodeCommand(['turn', '1']));
-		}
-		 
-		function connect(name) {
-			conx.sendUTF(encodeCommand(['connect', name]));
-		}
-         
-		conx.on('error', function(error) {
-			console.log(chalk.red.bgYellow.bold('Error while connecting: ' + error.toString()));
-      setTimeout(function() {
-				connectToServer();
-			}, config.conxTimeouut);
-		});
+        function mouse(px, pxx, position) {
+            conx.sendUTF(encodeCommand(['mouse', px, pxx, position]));
+        }
 
-		conx.on('close', function() {
-			console.log(chalk.red.bgYellow.bold('Connection was closed.'));
-			setTimeout(function() {
-				connectToServer();
-			}, config.conxTimeout);
-		});
+        function getTurn() {
+            conx.sendUTF(encodeCommand(['turn', '1']));
+        }
 
-		conx.on('message', function(message) {
-			var cmd = decodeCommand(message);
-			var username = cmd[1];
-            var command = cmd[2];
-			var prefix = 'y>';
+        function connect(name) {
+            conx.sendUTF(encodeCommand(['connect', name]));
+        }
 
-            if(!username == 'YandereBot' || !username.contains('guest')) return;
-
-			switch (cmd[0]) {
-				case "chat":
-				switch(command) {
-					case prefix + "help":
-					setTimeout(function() { chat('y>help y>kit y>google y>youtube y>info'); }, 3000);
-					setTimeout(function() { chat('y>test y>minecraft'); }, 6000);
-					break;
-					case prefix + "kit":
-					if(!username == "yandere chan") {
-						setTimeout(function() { send('Fuck off forkie.'); }, 3000);
-					} else {
-						let arg = command.slice('y>kit ');
-						var kitt = 'off';
-						if(arg == 'on') {
-							if(kitt == 'on') {
-								send('Kit is already on!');
-							} else {
-								setInterval(() => {
-									if(!kitt == 'off') return;
-									let direction = [1, 2, 4, 8, 16];
-									mouse(Math.ceil(Math.random() * 100500), Math.ceil(Math.random() * 100500), direction[Math.floor(Math.random() * direction.length)]);
-									sendKey(Math.ceil(Math.random() * 70000));
-									getTurn();
-								}, 1);
-							}
-						} else {
-							if(kitt == 'off') {
-								send('Kit is already off!');
-							} else {
-								kitt = 'off';
-							}
-						}
-					}
-					break;
-					case prefix + "google":
-					let arg = command.split(' ');
-					setTimeout(function() { chat(`https://google.com/search?q=${arg.join('+')}`); }, 3000);
-					setTimeout(function() { chat('If you didnt get a URL, message probably too big.'); }, 6000);
-					break;
-					case prefix + "youtube":
-					let arg = command.split(' ');
-					setTimeout(function() { chat(`https://www.youtube.com/results?search_query=${arg.join('+')}`); }, 3000);
-					setTimeout(function() { chat('If you didnt get a URL, message probably too big.'); }, 6000);
-					break;
-					case prefix + "info":
-					setTimeout(function() { chat('https://github.com/CollabVM-Unofficial/yanderebot/blob/master/README.md'); }, 3000)
-					break;
-					case prefix + "test":
-					setTimeout(function() { chat('Bot up and working!'); }, 3000);
-					break;
-					case prefix + "minecraft":
-					setTimeout(function() { chat('https://discord.gg/minecraft') }, 3000) // haha minecraft discord server advertisement epic
-					break;
-				}
-				break;
-			}
+        conx.on('error', function(error) {
+            console.log(chalk.red.bgYellow.bold('Error while connecting) { ' + error.toString()));
+            setTimeout(function() {
+                connectToServer();
+            }, config.conxTimeouut);
         });
 
-		var user = config.name;
-		conx.sendUTF('6.rename,' + user.length + '.' + user + ';');
+        conx.on('close', function() {
+            console.log(chalk.red.bgYellow.bold('Connection was closed.'));
+            setTimeout(function() {
+                connectToServer();
+            }, config.conxTimeout);
+        });
 
-		setInterval(function() {
-			if (conx.connected) {
-				conx.sendUTF('3.nop;');
-			}
-		}, 2500);
-		if (conx.connected) {
-			chat('YandereBot v1.1 by Yandere Chan.');
-		}
+        conx.on('message', function(message) {
+            var cmd = decodeCommand(message.utf8Data);
+            var username = cmd[1];
+            var command = cmd[2];
+            var prefix = 'y!';
 
-	});
-	ws.connect('ws://' + config.ip, 'guacamole');
+            if (!username == 'YandereBot' || !username.includes('guest')) return;
+
+            if (cmd[0] == 'chat') {
+                if (command == prefix + "help") {
+                    chat('y>help y>kit y>google y>youtube y>info');
+                    chat('y>test y>minecraft');
+                }
+                if (command == prefix + "kit") {
+                    if (!username == "yandere chan") {
+                        send('Fuck off forkie.');
+                    } else {
+                        let arg = command.replace('y>kit ', '');
+                        var kitt = 'off';
+                        if (arg == 'on') {
+                            if (kitt == 'on') {
+                                send('Kit is already on!');
+                            } else {
+                                setInterval(() => {
+                                    if (!kitt == 'off') return;
+                                    let direction = [1, 2, 4, 8, 16];
+                                    mouse(Math.ceil(Math.random() * 100500), Math.ceil(Math.random() * 100500), direction[Math.floor(Math.random() * direction.length)]);
+                                    sendKey(Math.ceil(Math.random() * 70000));
+                                    getTurn();
+                                }, 1);
+                            }
+                        } else {
+                            if (kitt == 'off') {
+                                send('Kit is already off!');
+                            } else {
+                                kitt = 'off';
+                            }
+                        }
+                    }
+                }
+                if (command == prefix + "google") {
+                    let argg = command.split(' ');
+                    chat(`https://google.com/search?q=${argg.join('+')}`);
+                    chat('If you didnt get a URL, message probably too big.');
+                }
+                if (command == prefix + "youtube") {
+                    let arggg = command.split(' ');
+                    chat(`https://www.youtube.com/results?search_query=${arggg.join('+')}`);
+                    chat('If you didnt get a URL, message probably too big.');
+                }
+                if (command == prefix + "info") {
+                    chat('https://github.com/CollabVM-Unofficial/yanderebot/blob/master/README.md');
+                }
+                if (command == prefix + "test") {
+                    chat('Bot up and working!');
+                }
+                if (command == prefix + "minecraft") {
+                    chat('https://discord.gg/minecraft') // haha minecraft discord server advertisement epic
+                }
+            }
+        });
+
+        var user = config.name;
+        conx.sendUTF('6.rename,' + user.length + '.' + user + ';');
+
+        setInterval(function() {
+            if (conx.connected) {
+                conx.sendUTF('3.nop;');
+            }
+        }, 2500);
+        if (conx.connected) {
+            chat('YandereBot v1.1 by Yandere Chan.');
+        }
+
+    });
+    ws.connect('ws://' + config.ip, 'guacamole');
 }
 connectToServer();
 
