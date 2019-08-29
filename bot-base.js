@@ -51,8 +51,6 @@ function connectToServer() {
 		function connect(name) {
 			conx.sendUTF(encodeCommand(['connect', name]));
 		}
-
-		function kit() 
          
 		conx.on('error', function(error) {
 			console.log(chalk.red.bgYellow.bold('Error while connecting: ' + error.toString()));
