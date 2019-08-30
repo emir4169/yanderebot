@@ -108,7 +108,7 @@ function connectToServer() {
                     chat('If you didnt get a URL, message probably too big.');
                 }
                 if (command == prefix + "e621") {
-                    chat(`https://google.com/search?q=${args.slice(1).join('+')}`);
+                    chat(`https://e621.net/post?tags=${args.slice(1).join('+')}`);
                     chat('If you didnt get a URL, message probably too big.');
                 }
                 if (command == prefix + "youtube") {
