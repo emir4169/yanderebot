@@ -108,6 +108,11 @@ function connectToServer() {
                     chat(`https://google.com/search?q=${argg.join('+')}`);
                     chat('If you didnt get a URL, message probably too big.');
                 }
+                if (command == prefix + "e621") {
+                    let argghh = command.split(' ');
+                    chat(`https://google.com/search?q=${argghh.join('+')}`);
+                    chat('If you didnt get a URL, message probably too big.');
+                }
                 if (command == prefix + "youtube") {
                     let arggg = command.split(' ');
                     chat(`https://www.youtube.com/results?search_query=${arggg.join('+')}`);
