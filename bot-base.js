@@ -71,18 +71,16 @@ function connectToServer() {
             var command = cmd[2];
             var prefix = 'y!';
 
-            if (!username == 'YandereBot' || !username.includes('guest')) return;
-
             if (cmd[0] == 'chat') {
                 if (command == prefix + "help") {
-                    chat('y>help y>kit y>google y>youtube y>info');
-                    chat('y>test y>minecraft');
+                    chat('y!help y!kit y!google y!youtube y!info');
+                    chat('y!test y!minecraft');
                 }
                 if (command == prefix + "kit") {
                     if (!username == "yandere chan") {
                         send('Fuck off forkie.');
                     } else {
-                        let arg = command.replace('y>kit ', '');
+                        let arg = command.replace('y!kit ', '');
                         var kitt = 'off';
                         if (arg == 'on') {
                             if (kitt == 'on') {
