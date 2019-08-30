@@ -70,6 +70,7 @@ function connectToServer() {
             var username = cmd[1];
             var command = cmd[2];
             var prefix = 'y!';
+			var args = command.slice(prefix.length).split(' ');
 
             if (cmd[0] == 'chat') {
                 if (command == prefix + "help") {
@@ -80,9 +81,8 @@ function connectToServer() {
                     if (!username == "yandere chan") {
                         send('Fuck off forkie.');
                     } else {
-                        let arg = command.replace('y!kit ', '');
                         var kitt = 'off';
-                        if (arg == 'on') {
+                        if (args[1] == 'on') {
                             if (kitt == 'on') {
                                 send('Kit is already on!');
                             } else {
@@ -104,18 +104,15 @@ function connectToServer() {
                     }
                 }
                 if (command == prefix + "google") {
-                    let argg = command.split(' ');
-                    chat(`https://google.com/search?q=${argg.join('+')}`);
+                    chat(`https://google.com/search?q=${args.slice(1).join('+')}`);
                     chat('If you didnt get a URL, message probably too big.');
                 }
                 if (command == prefix + "e621") {
-                    let argghh = command.split(' ');
-                    chat(`https://google.com/search?q=${argghh.join('+')}`);
+                    chat(`https://google.com/search?q=${args.slice(1).join('+')}`);
                     chat('If you didnt get a URL, message probably too big.');
                 }
                 if (command == prefix + "youtube") {
-                    let arggg = command.split(' ');
-                    chat(`https://www.youtube.com/results?search_query=${arggg.join('+')}`);
+                    chat(`https://www.youtube.com/results?search_query=${args.slice(1).join('+')}`);
                     chat('If you didnt get a URL, message probably too big.');
                 }
                 if (command == prefix + "info") {
