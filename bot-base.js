@@ -3,7 +3,7 @@ var chalk = require('chalk');
 class Config {
     constructor() {
         this.conxTimeout = 600;
-        this.ip = "104.219.234.138:6004";
+        this.ip = "wss://computernewb.com/collab-vm/vm0/";
         this.name = 'YandereBot';
     }
 }
